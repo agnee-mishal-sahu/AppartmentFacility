@@ -34,9 +34,11 @@ public class ResisdentServiceImpl implements ResidentService {
 		
 		if (resident != null) {
 			if(validateResident(resident)) {
+				resident.setStatus(ValidationConstants.USER_APPROVAL_PENDING);
 				Resident residentEntity = residentRepository.save(resident);
 				createResidentResponseDto.setResidentDto(residentDto);
 				createResidentResponseDto.getResidentDto().setPassword(null);
+				createResidentResponseDto.getResidentDto().setStatus(residentEntity.getStatus());
 				createResidentResponseDto.getResidentDto().setId(residentEntity.getId());
 				createResidentResponseDto.setMessage(MessageConstants.RESIDENT_STATUS_SUCCESS);
 			}	

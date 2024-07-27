@@ -12,6 +12,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.appartment.facilities.constants.ValidationConstants;
+import com.appartment.facilities.entity.User;
+import com.appartment.facilities.exception.LoginException;
+import com.appartment.facilities.repository.UserRepository;
 import com.appartment.facilities.security.classes.AuthenticationRequest;
 import com.appartment.facilities.security.classes.AuthenticationResponse;
 import com.appartment.facilities.security.classes.CustomUserDetailsService;
@@ -28,10 +32,20 @@ public class AuthController {
 	private JwtUtil jwtUtil;
 
 	@Autowired
+	UserRepository userRepository;
+
+	@Autowired
 	private CustomUserDetailsService userDetailsService;
+
 	@PostMapping("/login")
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest)
-			throws Exception {
+			throws LoginException, Exception {
+		
+		final User user = userRepository.findByUserName(authenticationRequest.getUsername());
+		if (user.getStatus().equals(ValidationConstants.USER_APPROVAL_PENDING)) {
+			throw new LoginException(ValidationConstants.USER_APPROVAL_PENDING);
+		}
+
 		try {
 			Authentication auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
 					authenticationRequest.getUsername(), authenticationRequest.getPassword()));

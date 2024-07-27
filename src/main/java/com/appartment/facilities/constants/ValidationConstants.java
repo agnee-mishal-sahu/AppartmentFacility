@@ -17,4 +17,8 @@ public class ValidationConstants {
 	public static final String FACILITY_ALREADY_OCCUPIED = "facility already occupied";
 	
 	public static final String USERNAME_EXISTS = "Username already exists.please choose another username.";
+	
+	public static final String USER_APPROVAL_PENDING = "Your signup is pending for approval, kindly contact Facilities Manager";
+
+	
 }

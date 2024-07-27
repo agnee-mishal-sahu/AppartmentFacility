@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.appartment.facilities.dto.CreateManagerResponseDto;
 import com.appartment.facilities.dto.ManagerDto;
 import com.appartment.facilities.exception.ManagerException;
+import com.appartment.facilities.exception.ResidentException;
 import com.appartment.facilities.service.ManagerService;
 
 @RestController
@@ -39,5 +40,10 @@ public class ManagerController {
     public ResponseEntity<?> getManager() {
         ManagerDto managerDto = managerService.getManager();
         return new ResponseEntity<>(managerDto, HttpStatus.OK);
+    }
+    @PutMapping("/approve-signup/{username}")
+    public ResponseEntity<?> approveSignUp(@PathVariable String username) throws ResidentException{
+    	String message= managerService.approveSignUp(username);
+    	return new ResponseEntity<>(message,HttpStatus.OK);
     }
 }

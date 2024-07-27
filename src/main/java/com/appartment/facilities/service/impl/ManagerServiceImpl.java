@@ -11,8 +11,11 @@ import com.appartment.facilities.constants.ValidationConstants;
 import com.appartment.facilities.dto.CreateManagerResponseDto;
 import com.appartment.facilities.dto.ManagerDto;
 import com.appartment.facilities.entity.Manager;
+import com.appartment.facilities.entity.User;
 import com.appartment.facilities.exception.ManagerException;
+import com.appartment.facilities.exception.ResidentException;
 import com.appartment.facilities.repository.ManagerRepository;
+import com.appartment.facilities.repository.UserRepository;
 import com.appartment.facilities.service.ManagerService;
 
 @Service
@@ -20,6 +23,9 @@ public class ManagerServiceImpl implements ManagerService {
 
 	@Autowired
 	ManagerRepository managerRepository;
+	
+	@Autowired
+	UserRepository userRepository;
 	
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
@@ -120,6 +126,20 @@ public class ManagerServiceImpl implements ManagerService {
 		}
 		return true;
 
+	}
+
+	@Override
+	public String approveSignUp(String userName) throws ResidentException {
+
+		User user=userRepository.findByUserName(userName);
+
+		if(user==null) {
+			throw new ResidentException(MessageConstants.RESIDENT_NOT_FOUND);
+		}
+		user.setStatus("Active");
+		userRepository.save(user);
+		
+		return "SignUp approved for user: "+userName;
 	}
 
 }
