@@ -15,7 +15,6 @@ public class ValidationConstants {
 	public static final String INVALID_RESIDENT_FOR_BOOKING = "resident doesn't exist for specified id";
 
 	public static final String FACILITY_ALREADY_OCCUPIED = "facility already occupied";
-
-
 	
+	public static final String USERNAME_EXISTS = "Username already exists.please choose another username.";
 }

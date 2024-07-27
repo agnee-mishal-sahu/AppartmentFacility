@@ -148,6 +148,9 @@ public class ResisdentServiceImpl implements ResidentService {
 		if (!resident.getPhone().matches(phoneRegex)) {
 			throw new ResidentException(ValidationConstants.INVALID_PHONE);
 		}
+		if(residentRepository.findByUserName(resident.getUserName()).isPresent()) {
+			throw new ResidentException(ValidationConstants.USERNAME_EXISTS);
+		}
 		return true;
 	}
 
